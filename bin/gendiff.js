@@ -1,4 +1,6 @@
 #!/usr/bin/env node
-import runProgram from '../src/calc-diff.js';
+import runProgram from '../src/index.js';
 
 runProgram();
+
+export default runProgram;
