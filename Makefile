@@ -9,3 +9,9 @@ publish:
 
 lint:
 	npx eslint .
+
+test:
+	npx jest .
+
+report:
+	npx jest --coverage

@@ -1,5 +1,8 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/V0000DY/frontend-project-46/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/V0000DY/frontend-project-46/actions)
+### Codeclimate status:
+[![Maintainability](https://api.codeclimate.com/v1/badges/797a0a3dcc2bf3ce7422/maintainability)](https://codeclimate.com/github/V0000DY/frontend-project-46/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/797a0a3dcc2bf3ce7422/test_coverage)](https://codeclimate.com/github/V0000DY/frontend-project-46/test_coverage)
 # gendiff
 "gendiff" is a program that determines the difference between two data structures.
 ### Utility features:
