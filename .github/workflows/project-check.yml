@@ -13,9 +13,11 @@ jobs:
       - name: install dependencies
         run: npm install
 
-      - name: Run Eslint and Jest
-        run: npx eslint .
-        run: npx jest .
+      - name: Run Eslint
+        run: make lint .
+
+      - name: Run Jest
+        run: make test
 
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v6.0.0
