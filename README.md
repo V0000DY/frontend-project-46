@@ -44,5 +44,7 @@ cd frontend-project-46
 npm install
 npm link
 ```
-### Command call
+### Command call with *.json files
 [![asciicast](https://asciinema.org/a/k4W7DDALjIcJc69siMv7NzXFs.svg)](https://asciinema.org/a/k4W7DDALjIcJc69siMv7NzXFs)
+### Command call with *.yml files
+[![asciicast](https://asciinema.org/a/dNRbodipKPecFYVdaFjLWD2kf.svg)](https://asciinema.org/a/dNRbodipKPecFYVdaFjLWD2kf)
