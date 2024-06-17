@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import parse from './parsers.js';
+import formatters from '../formatters/index.js';
 
 const findDiff = (obj1, obj2) => {
   const keysObj1 = Object.keys(obj1);
@@ -58,11 +59,12 @@ const findDiff = (obj1, obj2) => {
   });
 };
 
-const runGendiff = (filepath1, filepath2) => {
+const genDiff = (filepath1, filepath2, formatName) => {
   const dataFile1 = parse(filepath1);
   const dataFile2 = parse(filepath2);
+  const formatter = formatters[formatName];
 
-  return findDiff(dataFile1, dataFile2);
+  return formatter(findDiff(dataFile1, dataFile2));
 };
 
-export default runGendiff;
+export default genDiff;

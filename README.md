@@ -50,3 +50,5 @@ npm link
 [![asciicast](https://asciinema.org/a/dNRbodipKPecFYVdaFjLWD2kf.svg)](https://asciinema.org/a/dNRbodipKPecFYVdaFjLWD2kf)
 ### Command call with option -f stylish
 [![asciicast](https://asciinema.org/a/B4MimLSekujhsEeRr7yl3EJfv.svg)](https://asciinema.org/a/B4MimLSekujhsEeRr7yl3EJfv)
+### Command call with option -f plain
+[![asciicast](https://asciinema.org/a/ihGIfWZ6OmHlZAtt9708Dx4uc.svg)](https://asciinema.org/a/ihGIfWZ6OmHlZAtt9708Dx4uc)
