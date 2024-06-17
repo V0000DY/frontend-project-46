@@ -33,6 +33,38 @@ gendiff filepath1.json filepath2.json
         key5: value5
     }
 }
+
+# format json
+gendiff --format json filepath3.json filepath4.json
+
+[
+  {
+    "operation": "remove",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "nochange",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "remove",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "update",
+    "path": "timeout",
+    "value": 20,
+    "oldValue": 50
+  },
+  {
+    "operation": "add",
+    "path": "verbose",
+    "value": true
+  }
+]
 ```
 ## Requirements
 Node version: 12.19.0
@@ -52,3 +84,5 @@ npm link
 [![asciicast](https://asciinema.org/a/B4MimLSekujhsEeRr7yl3EJfv.svg)](https://asciinema.org/a/B4MimLSekujhsEeRr7yl3EJfv)
 ### Command call with option -f plain
 [![asciicast](https://asciinema.org/a/ihGIfWZ6OmHlZAtt9708Dx4uc.svg)](https://asciinema.org/a/ihGIfWZ6OmHlZAtt9708Dx4uc)
+### Command call with option -f json
+[![asciicast](https://asciinema.org/a/5qnHfk2BtclPScM0nTopHVLZR.svg)](https://asciinema.org/a/5qnHfk2BtclPScM0nTopHVLZR)

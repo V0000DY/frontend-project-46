@@ -48,6 +48,64 @@ Property 'verbose' was added with value: 'true'`);
 Property 'proxy' was added with value: '123.234.53.22'
 Property 'timeout' was updated. From '20' to '50'
 Property 'verbose' was removed`);
+  expect(genDiff(path1, path2, 'json'))
+    .toEqual(`[
+  {
+    "operation": "remove",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "nochange",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "remove",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "update",
+    "path": "timeout",
+    "value": 20,
+    "oldValue": 50
+  },
+  {
+    "operation": "add",
+    "path": "verbose",
+    "value": true
+  }
+]`);
+  expect(genDiff(path2, path1, 'json'))
+    .toEqual(`[
+  {
+    "operation": "add",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "nochange",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "add",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "update",
+    "path": "timeout",
+    "value": 50,
+    "oldValue": 20
+  },
+  {
+    "operation": "remove",
+    "path": "verbose",
+    "value": true
+  }
+]`);
 });
 
 test('compareJSONs2', () => {
@@ -75,6 +133,52 @@ Property 'timeout' was removed`);
 Property 'host' was added with value: 'hexlet.io'
 Property 'proxy' was added with value: '123.234.53.22'
 Property 'timeout' was added with value: '50'`);
+  expect(genDiff(path1, path3, 'json'))
+    .toEqual(`[
+  {
+    "operation": "remove",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "remove",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "remove",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "remove",
+    "path": "timeout",
+    "value": 50
+  }
+]`);
+  expect(genDiff(path3, path1, 'json'))
+    .toEqual(`[
+  {
+    "operation": "add",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "add",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "add",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "add",
+    "path": "timeout",
+    "value": 50
+  }
+]`);
 });
 
 test('compareJSONs3', () => {
@@ -83,6 +187,8 @@ test('compareJSONs3', () => {
 }`);
   expect(genDiff(path3, path4, 'plain'))
     .toEqual('');
+  expect(genDiff(path3, path4, 'json'))
+    .toEqual('[]');
 });
 
 test('compareJSONs4', () => {
@@ -143,6 +249,123 @@ Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`);
+  expect(genDiff(path7, path8, 'json'))
+    .toEqual(`[
+  {
+    "operation": "nochange",
+    "path": "common",
+    "children": [
+      {
+        "operation": "add",
+        "path": "follow",
+        "value": false
+      },
+      {
+        "operation": "nochange",
+        "path": "setting1",
+        "value": "Value 1"
+      },
+      {
+        "operation": "remove",
+        "path": "setting2",
+        "value": 200
+      },
+      {
+        "operation": "update",
+        "path": "setting3",
+        "value": null,
+        "oldValue": true
+      },
+      {
+        "operation": "add",
+        "path": "setting4",
+        "value": "blah blah"
+      },
+      {
+        "operation": "add",
+        "path": "setting5",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "operation": "nochange",
+        "path": "setting6",
+        "children": [
+          {
+            "operation": "nochange",
+            "path": "doge",
+            "children": [
+              {
+                "operation": "update",
+                "path": "wow",
+                "value": "so much",
+                "oldValue": ""
+              }
+            ]
+          },
+          {
+            "operation": "nochange",
+            "path": "key",
+            "value": "value"
+          },
+          {
+            "operation": "add",
+            "path": "ops",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "operation": "nochange",
+    "path": "group1",
+    "children": [
+      {
+        "operation": "update",
+        "path": "baz",
+        "value": "bars",
+        "oldValue": "bas"
+      },
+      {
+        "operation": "nochange",
+        "path": "foo",
+        "value": "bar"
+      },
+      {
+        "operation": "update",
+        "path": "nest",
+        "value": "str",
+        "oldValue": {
+          "key": "value"
+        }
+      }
+    ]
+  },
+  {
+    "operation": "remove",
+    "path": "group2",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "operation": "add",
+    "path": "group3",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]`);
 });
 
 test('compareYamls1', () => {
@@ -174,6 +397,64 @@ Property 'verbose' was added with value: 'true'`);
 Property 'proxy' was added with value: '123.234.53.22'
 Property 'timeout' was updated. From '20' to '50'
 Property 'verbose' was removed`);
+  expect(genDiff(path5, path6, 'json'))
+    .toEqual(`[
+  {
+    "operation": "remove",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "nochange",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "remove",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "update",
+    "path": "timeout",
+    "value": 20,
+    "oldValue": 50
+  },
+  {
+    "operation": "add",
+    "path": "verbose",
+    "value": true
+  }
+]`);
+  expect(genDiff(path6, path5, 'json'))
+    .toEqual(`[
+  {
+    "operation": "add",
+    "path": "follow",
+    "value": false
+  },
+  {
+    "operation": "nochange",
+    "path": "host",
+    "value": "hexlet.io"
+  },
+  {
+    "operation": "add",
+    "path": "proxy",
+    "value": "123.234.53.22"
+  },
+  {
+    "operation": "update",
+    "path": "timeout",
+    "value": 50,
+    "oldValue": 20
+  },
+  {
+    "operation": "remove",
+    "path": "verbose",
+    "value": true
+  }
+]`);
 });
 
 test('compareYamls2', () => {
@@ -234,4 +515,121 @@ Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`);
+  expect(genDiff(path9, path10, 'json'))
+    .toEqual(`[
+  {
+    "operation": "nochange",
+    "path": "common",
+    "children": [
+      {
+        "operation": "add",
+        "path": "follow",
+        "value": false
+      },
+      {
+        "operation": "nochange",
+        "path": "setting1",
+        "value": "Value 1"
+      },
+      {
+        "operation": "remove",
+        "path": "setting2",
+        "value": 200
+      },
+      {
+        "operation": "update",
+        "path": "setting3",
+        "value": null,
+        "oldValue": true
+      },
+      {
+        "operation": "add",
+        "path": "setting4",
+        "value": "blah blah"
+      },
+      {
+        "operation": "add",
+        "path": "setting5",
+        "value": {
+          "key5": "value5"
+        }
+      },
+      {
+        "operation": "nochange",
+        "path": "setting6",
+        "children": [
+          {
+            "operation": "nochange",
+            "path": "doge",
+            "children": [
+              {
+                "operation": "update",
+                "path": "wow",
+                "value": "so much",
+                "oldValue": ""
+              }
+            ]
+          },
+          {
+            "operation": "nochange",
+            "path": "key",
+            "value": "value"
+          },
+          {
+            "operation": "add",
+            "path": "ops",
+            "value": "vops"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "operation": "nochange",
+    "path": "group1",
+    "children": [
+      {
+        "operation": "update",
+        "path": "baz",
+        "value": "bars",
+        "oldValue": "bas"
+      },
+      {
+        "operation": "nochange",
+        "path": "foo",
+        "value": "bar"
+      },
+      {
+        "operation": "update",
+        "path": "nest",
+        "value": "str",
+        "oldValue": {
+          "key": "value"
+        }
+      }
+    ]
+  },
+  {
+    "operation": "remove",
+    "path": "group2",
+    "value": {
+      "abc": 12345,
+      "deep": {
+        "id": 45
+      }
+    }
+  },
+  {
+    "operation": "add",
+    "path": "group3",
+    "value": {
+      "deep": {
+        "id": {
+          "number": 45
+        }
+      },
+      "fee": 100500
+    }
+  }
+]`);
 });
