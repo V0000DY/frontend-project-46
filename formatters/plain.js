@@ -2,7 +2,7 @@ const getPrintedValue = (value) => {
   let printValue;
 
   if (typeof value !== 'object') {
-    printValue = `'${value}'`;
+    printValue = typeof value !== 'string' ? `${value}` : `'${value}'`;
   } else if (value === null) {
     printValue = null;
   } else {
