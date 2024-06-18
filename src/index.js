@@ -62,9 +62,6 @@ const findDiff = (obj1, obj2) => {
 const genDiff = (filepath1, filepath2, formatName) => {
   const dataFile1 = parse(filepath1);
   const dataFile2 = parse(filepath2);
-  console.log(`Передано как filepath1 = ${filepath1}`);
-  console.log(`Передано как filepath2 = ${filepath2}`);
-  console.log(`Передано как formatName = ${formatName}`);
   const formatter = formatters[formatName];
 
   return formatter(findDiff(dataFile1, dataFile2));

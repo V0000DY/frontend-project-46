@@ -5,8 +5,6 @@ const formatters = {
   stylish,
   plain,
   json: (data) => JSON.stringify(data, null, 2),
-  yml: stylish,
-  yaml: stylish,
   undefined: stylish,
 };
 
