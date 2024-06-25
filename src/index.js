@@ -2,69 +2,66 @@ import _ from 'lodash';
 import parse from './parsers.js';
 import formatters from '../formatters/index.js';
 
-const findDiff = (obj1, obj2) => {
-  const keysObj1 = Object.keys(obj1);
-  const keysObj2 = Object.keys(obj2);
-  const result = [];
+const findDiff = (data1, data2) => {
+  const keys1 = Object.keys(data1);
+  const keys2 = Object.keys(data2);
+  const keys = _.union(keys1, keys2);
 
-  keysObj1.forEach((key) => {
-    const valueObj1 = _.get(obj1, key);
-    const valueObj2 = _.get(obj2, key);
-    const value1IsObject = typeof valueObj1 === 'object';
-    const value2IsObject = typeof valueObj2 === 'object';
+  const result = keys.map((key) => {
+    const value1 = _.get(data1, key);
+    const value2 = _.get(data2, key);
+    const value1IsObject = typeof value1 === 'object';
+    const value2IsObject = typeof value2 === 'object';
 
     if (value1IsObject && value2IsObject) {
-      const subResult = {
+      return {
         operation: 'nochange',
         path: key,
-        children: findDiff(valueObj1, valueObj2),
+        children: findDiff(value1, value2),
       };
-      result.push(subResult);
-    } else if (!_.has(obj2, key)) {
-      result.push({
-        operation: 'remove',
-        path: key,
-        value: valueObj1,
-      });
-    } else if (valueObj1 !== valueObj2) {
-      result.push({
-        operation: 'update',
-        path: key,
-        value: valueObj2,
-        oldValue: valueObj1,
-      });
-    } else {
-      result.push({
-        operation: 'nochange',
-        path: key,
-        value: valueObj1,
-      });
     }
-  });
 
-  keysObj2.forEach((key) => {
-    if (_.has(obj2, key) && !_.has(obj1, key)) {
-      result.push({
+    if (_.has(data2, key) && !_.has(data1, key)) {
+      return {
         operation: 'add',
         path: key,
-        value: _.get(obj2, key),
-      });
+        value: _.get(data2, key),
+      };
     }
+
+    if (_.has(data1, key) && !_.has(data2, key)) {
+      return {
+        operation: 'remove',
+        path: key,
+        value: value1,
+      };
+    }
+
+    if (value1 !== value2 && _.has(data1, key) && _.has(data2, key)) {
+      return {
+        operation: 'update',
+        path: key,
+        value: value2,
+        oldValue: value1,
+      };
+    }
+
+    return {
+      operation: 'nochange',
+      path: key,
+      value: value1,
+    };
   });
 
-  return result.sort((item1, item2) => {
-    const path1 = item1.path;
-    const path2 = item2.path;
-    return path1 > path2 ? 1 : -1;
-  });
+  return _.sortBy(result, ['path']);
 };
 
-const genDiff = (filepath1, filepath2, formatName) => {
-  const dataFile1 = parse(filepath1);
-  const dataFile2 = parse(filepath2);
+const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
+  const data1 = parse(filepath1);
+  const data2 = parse(filepath2);
   const formatter = formatters[formatName];
 
-  return formatter(findDiff(dataFile1, dataFile2));
+  return formatter(findDiff(data1, data2));
 };
 
 export default genDiff;

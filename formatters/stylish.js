@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 const getTab = (tabCount) => {
   const tab = '  '.repeat(tabCount);
   return tab;
@@ -7,22 +9,22 @@ const getProp = (data, tabCount) => {
   if (typeof data !== 'object' || data === null) return data;
 
   const keys = Object.keys(data);
-  const result = ['{'];
+  const start = ['{'];
+  const end = `${getTab(tabCount - 1)}}`;
 
-  keys.forEach((key) => {
+  const middle = keys.map((key) => {
     const value = data[key];
-    result.push(`${getTab(tabCount)}  ${key}: ${getProp(value, tabCount + 2)}`);
-  });
+    return `${getTab(tabCount)}  ${key}: ${getProp(value, tabCount + 2)}`;
+  }).join('\n');
 
-  result.push(`${getTab(tabCount - 1)}}`);
-
-  return result.join('\n');
+  return [start, middle, end].join('\n');
 };
 
 const stylish = (data, tabCount = 1) => {
-  const result = ['{'];
+  const start = ['{'];
+  const end = `${getTab(tabCount - 1)}}`;
 
-  data.forEach((item) => {
+  const middle = data.map((item) => {
     const {
       children,
       operation,
@@ -31,30 +33,32 @@ const stylish = (data, tabCount = 1) => {
       oldValue,
     } = item;
 
-    switch (operation) {
-      case 'add':
-        result.push(`${getTab(tabCount)}+ ${path}: ${getProp(value, tabCount + 2)}`);
-        break;
-      case 'remove':
-        result.push(`${getTab(tabCount)}- ${path}: ${getProp(value, tabCount + 2)}`);
-        break;
-      case 'update':
-        result.push(`${getTab(tabCount)}- ${path}: ${getProp(oldValue, tabCount + 2)}`);
-        result.push(`${getTab(tabCount)}+ ${path}: ${getProp(value, tabCount + 2)}`);
-        break;
-      case 'nochange':
-        if (children) {
-          result.push(`${getTab(tabCount)}  ${path}: ${stylish(children, tabCount + 2)}`);
-        } else {
-          result.push(`${getTab(tabCount)}  ${path}: ${getProp(value, tabCount + 2)}`);
-        }
-        break;
-      default:
-        throw Error('Invalid operation in property object!');
+    if (operation === 'add') {
+      return `${getTab(tabCount)}+ ${path}: ${getProp(value, tabCount + 2)}`;
     }
+
+    if (operation === 'remove') {
+      return `${getTab(tabCount)}- ${path}: ${getProp(value, tabCount + 2)}`;
+    }
+
+    if (operation === 'update') {
+      const part1 = `${getTab(tabCount)}- ${path}: ${getProp(oldValue, tabCount + 2)}`;
+      const part2 = `${getTab(tabCount)}+ ${path}: ${getProp(value, tabCount + 2)}`;
+      return [part1, part2].join('\n');
+    }
+
+    if (operation === 'nochange') {
+      if (children) {
+        return `${getTab(tabCount)}  ${path}: ${stylish(children, tabCount + 2)}`;
+      }
+
+      return `${getTab(tabCount)}  ${path}: ${getProp(value, tabCount + 2)}`;
+    }
+
+    return '';
   });
 
-  result.push(`${getTab(tabCount - 1)}}`);
+  const result = _.compact([start, _.compact(middle).join('\n'), end]);
 
   return result.join('\n');
 };

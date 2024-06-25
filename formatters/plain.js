@@ -1,21 +1,19 @@
-const getPrintedValue = (value) => {
-  let printValue;
+import _ from 'lodash';
 
+const getPrintedValue = (value) => {
   if (typeof value !== 'object') {
-    printValue = typeof value !== 'string' ? `${value}` : `'${value}'`;
-  } else if (value === null) {
-    printValue = null;
-  } else {
-    printValue = '[complex value]';
+    return typeof value !== 'string' ? `${value}` : `'${value}'`;
   }
 
-  return printValue;
+  if (value === null) {
+    return null;
+  }
+
+  return '[complex value]';
 };
 
 const plain = (data) => {
-  const result = [];
-
-  data.forEach((item) => {
+  const result = data.map((item) => {
     const {
       children,
       operation,
@@ -24,31 +22,26 @@ const plain = (data) => {
       oldValue,
     } = item;
 
-    switch (operation) {
-      case 'add':
-        result.push(`Property '${path}' was added with value: ${getPrintedValue(value)}`);
-        break;
-      case 'remove':
-        result.push(`Property '${path}' was removed`);
-        break;
-      case 'update':
-        result.push(`Property '${path}' was updated. From ${getPrintedValue(oldValue)} to ${getPrintedValue(value)}`);
-        break;
-      case 'nochange':
-        if (children) {
-          result.push(plain(children.map((child) => {
-            // eslint-disable-next-line no-param-reassign
-            child.path = `${path}.${child.path}`;
-            return child;
-          })));
-        }
-        break;
-      default:
-        throw Error('Invalid operation in property object!');
+    if (children) {
+      return plain(children.map((child) => _.defaults({ path: `${path}.${child.path}` }, child)));
     }
+
+    if (operation === 'add') {
+      return `Property '${path}' was added with value: ${getPrintedValue(value)}`;
+    }
+
+    if (operation === 'remove') {
+      return `Property '${path}' was removed`;
+    }
+
+    if (operation === 'update') {
+      return `Property '${path}' was updated. From ${getPrintedValue(oldValue)} to ${getPrintedValue(value)}`;
+    }
+
+    return '';
   });
 
-  return result.join('\n');
+  return _.compact(result).join('\n');
 };
 
 export default plain;
