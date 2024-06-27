@@ -1,12 +1,8 @@
 import _ from 'lodash';
 
 const getPrintedValue = (value) => {
-  if (typeof value !== 'object') {
+  if (!_.isPlainObject(value)) {
     return typeof value !== 'string' ? `${value}` : `'${value}'`;
-  }
-
-  if (value === null) {
-    return null;
   }
 
   return '[complex value]';

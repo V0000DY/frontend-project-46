@@ -6,7 +6,7 @@ const getTab = (tabCount) => {
 };
 
 const getProp = (data, tabCount) => {
-  if (typeof data !== 'object' || data === null) return data;
+  if (!_.isPlainObject(data)) return data;
 
   const keys = Object.keys(data);
   const start = ['{'];

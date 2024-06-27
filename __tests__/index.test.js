@@ -17,6 +17,9 @@ describe('genDiff', () => {
   test('compare empty json files', () => {
     const emptyJson = getFixturePath('file1.json');
 
+    expect(genDiff(emptyJson, emptyJson))
+      .toEqual(`{
+}`);
     expect(genDiff(emptyJson, emptyJson, 'stylish'))
       .toEqual(`{
 }`);
@@ -30,6 +33,8 @@ describe('genDiff', () => {
     const json1 = getFixturePath('file2.json');
     const json2 = getFixturePath('file3.json');
 
+    expect(genDiff(json1, json2))
+      .toEqual(stylishResult);
     expect(genDiff(json1, json2, 'stylish'))
       .toEqual(stylishResult);
     expect(genDiff(json1, json2, 'plain'))
@@ -42,6 +47,8 @@ describe('genDiff', () => {
     const yaml1 = getFixturePath('file1.yml');
     const yaml2 = getFixturePath('file2.yml');
 
+    expect(genDiff(yaml1, yaml2))
+      .toEqual(stylishResult);
     expect(genDiff(yaml1, yaml2, 'stylish'))
       .toEqual(stylishResult);
     expect(genDiff(yaml1, yaml2, 'plain'))
