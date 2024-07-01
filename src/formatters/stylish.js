@@ -1,66 +1,73 @@
 import _ from 'lodash';
 
-const getTab = (tabCount) => {
-  const tab = '  '.repeat(tabCount);
-  return tab;
+const getTab = (depth) => {
+  const bodyTabCount = depth * 4 - 2;
+  const bracketTabCount = depth * 4 - 4;
+  const bodyTab = ' '.repeat(bodyTabCount);
+  const bracketTab = ' '.repeat(bracketTabCount);
+  return { bodyTab, bracketTab };
 };
 
-const getProp = (data, tabCount) => {
+const getProp = (data, depth) => {
   if (!_.isPlainObject(data)) return data;
 
   const keys = Object.keys(data);
-  const start = ['{'];
-  const end = `${getTab(tabCount - 1)}}`;
+  const { bodyTab, bracketTab } = getTab(depth);
 
-  const middle = keys.map((key) => {
+  const body = keys.map((key) => {
     const value = data[key];
-    return `${getTab(tabCount)}  ${key}: ${getProp(value, tabCount + 2)}`;
+    return `${bodyTab}  ${key}: ${getProp(value, depth + 1)}`;
   }).join('\n');
 
-  return [start, middle, end].join('\n');
+  const bracket = `${bracketTab}}`;
+
+  return `{
+${body}
+${bracket}`;
 };
 
-const stylish = (data, tabCount = 1) => {
-  const start = ['{'];
-  const end = `${getTab(tabCount - 1)}}`;
+const formatStylish = (data, depth = 1) => {
+  const { bodyTab, bracketTab } = getTab(depth);
 
-  const middle = data.map((item) => {
+  const body = data.map((item) => {
     const {
       children,
       operation,
-      path,
+      key,
       value,
-      oldValue,
+      value1,
+      value2,
     } = item;
 
     if (operation === 'add') {
-      return `${getTab(tabCount)}+ ${path}: ${getProp(value, tabCount + 2)}`;
+      return `${bodyTab}+ ${key}: ${getProp(value, depth + 1)}`;
     }
 
     if (operation === 'remove') {
-      return `${getTab(tabCount)}- ${path}: ${getProp(value, tabCount + 2)}`;
+      return `${bodyTab}- ${key}: ${getProp(value, depth + 1)}`;
     }
 
     if (operation === 'update') {
-      const part1 = `${getTab(tabCount)}- ${path}: ${getProp(oldValue, tabCount + 2)}`;
-      const part2 = `${getTab(tabCount)}+ ${path}: ${getProp(value, tabCount + 2)}`;
-      return [part1, part2].join('\n');
+      return `${bodyTab}- ${key}: ${getProp(value1, depth + 1)}
+${bodyTab}+ ${key}: ${getProp(value2, depth + 1)}`;
     }
 
     if (operation === 'nochange') {
       if (children) {
-        return `${getTab(tabCount)}  ${path}: ${stylish(children, tabCount + 2)}`;
+        return `${bodyTab}  ${key}: ${formatStylish(children, depth + 1)}`;
       }
 
-      return `${getTab(tabCount)}  ${path}: ${getProp(value, tabCount + 2)}`;
+      return `${bodyTab}  ${key}: ${getProp(value, depth + 1)}`;
     }
 
     return '';
-  });
+  }).join('\n');
 
-  const result = _.compact([start, _.compact(middle).join('\n'), end]);
+  const bracket = `${bracketTab}}`;
 
-  return result.join('\n');
+  return `{
+${body}
+${bracket}`;
 };
 
-export default stylish;
+export default formatStylish;

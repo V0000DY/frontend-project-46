@@ -8,30 +8,31 @@ const getPrintedValue = (value) => {
   return '[complex value]';
 };
 
-const plain = (data) => {
+const formatPlain = (data) => {
   const result = data.map((item) => {
     const {
       children,
       operation,
-      path,
+      key,
       value,
-      oldValue,
+      value1,
+      value2,
     } = item;
 
     if (children) {
-      return plain(children.map((child) => _.defaults({ path: `${path}.${child.path}` }, child)));
+      return formatPlain(children.map((child) => _.defaults({ key: `${key}.${child.key}` }, child)));
     }
 
     if (operation === 'add') {
-      return `Property '${path}' was added with value: ${getPrintedValue(value)}`;
+      return `Property '${key}' was added with value: ${getPrintedValue(value)}`;
     }
 
     if (operation === 'remove') {
-      return `Property '${path}' was removed`;
+      return `Property '${key}' was removed`;
     }
 
     if (operation === 'update') {
-      return `Property '${path}' was updated. From ${getPrintedValue(oldValue)} to ${getPrintedValue(value)}`;
+      return `Property '${key}' was updated. From ${getPrintedValue(value1)} to ${getPrintedValue(value2)}`;
     }
 
     return '';
@@ -40,4 +41,4 @@ const plain = (data) => {
   return _.compact(result).join('\n');
 };
 
-export default plain;
+export default formatPlain;

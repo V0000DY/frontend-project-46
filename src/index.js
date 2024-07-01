@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import parse from './parsers.js';
-import formatters from './formatters/index.js';
+import formatDiff from './formatters/index.js';
 import findDiff from './findDiff.js';
 
 const getData = (filepath) => {
@@ -16,9 +16,9 @@ const getData = (filepath) => {
 const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
   const data1 = getData(filepath1);
   const data2 = getData(filepath2);
-  const formatter = formatters[formatName];
+  const diff = findDiff(data1, data2);
 
-  return formatter(findDiff(data1, data2));
+  return formatDiff(diff, formatName);
 };
 
 export default genDiff;

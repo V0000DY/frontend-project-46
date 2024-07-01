@@ -9,28 +9,26 @@ const findDiff = (data1, data2) => {
     if (!_.has(data1, key)) {
       return {
         operation: 'add',
-        path: key,
-        value: _.get(data2, key),
+        key,
+        value: data2[key],
       };
     }
 
     if (!_.has(data2, key)) {
       return {
         operation: 'remove',
-        path: key,
-        value: _.get(data1, key),
+        key,
+        value: data1[key],
       };
     }
 
-    const value1 = _.get(data1, key);
-    const value2 = _.get(data2, key);
-    const value1IsObject = _.isPlainObject(value1);
-    const value2IsObject = _.isPlainObject(value2);
+    const value1 = data1[key];
+    const value2 = data2[key];
 
-    if (value1IsObject && value2IsObject) {
+    if (_.isPlainObject(value1) && _.isPlainObject(value2)) {
       return {
         operation: 'nochange',
-        path: key,
+        key,
         children: findDiff(value1, value2),
       };
     }
@@ -38,16 +36,16 @@ const findDiff = (data1, data2) => {
     if (!_.isEqual(value1, value2)) {
       return {
         operation: 'update',
-        path: key,
-        value: value2,
-        oldValue: value1,
+        key,
+        value1,
+        value2,
       };
     }
 
     return {
       operation: 'nochange',
-      path: key,
-      value: _.get(data1, key),
+      key,
+      value: value1,
     };
   });
 

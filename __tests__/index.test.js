@@ -19,9 +19,11 @@ describe('genDiff', () => {
 
     expect(genDiff(emptyJson, emptyJson))
       .toEqual(`{
+
 }`);
     expect(genDiff(emptyJson, emptyJson, 'stylish'))
       .toEqual(`{
+
 }`);
     expect(genDiff(emptyJson, emptyJson, 'plain'))
       .toEqual('');

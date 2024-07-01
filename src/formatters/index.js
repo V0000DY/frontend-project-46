@@ -1,11 +1,16 @@
-import stylish from './stylish.js';
-import plain from './plain.js';
+import formatStylish from './stylish.js';
+import formatPlain from './plain.js';
 
-const formatters = {
-  stylish,
-  plain,
-  json: (data) => JSON.stringify(data, null, 2),
-  undefined: stylish,
+const formatDiff = (diff, formatName) => {
+  const formatters = {
+    stylish: formatStylish,
+    plain: formatPlain,
+    json: (data) => JSON.stringify(data, null, 2),
+    undefined: formatStylish,
+  };
+  const formatter = formatters[formatName];
+
+  return formatter(diff);
 };
 
-export default formatters;
+export default formatDiff;

@@ -1,65 +1,65 @@
 [
   {
     "operation": "nochange",
-    "path": "common",
+    "key": "common",
     "children": [
       {
         "operation": "add",
-        "path": "follow",
+        "key": "follow",
         "value": false
       },
       {
         "operation": "nochange",
-        "path": "setting1",
+        "key": "setting1",
         "value": "Value 1"
       },
       {
         "operation": "remove",
-        "path": "setting2",
+        "key": "setting2",
         "value": 200
       },
       {
         "operation": "update",
-        "path": "setting3",
-        "value": null,
-        "oldValue": true
+        "key": "setting3",
+        "value1": true,
+        "value2": null
       },
       {
         "operation": "add",
-        "path": "setting4",
+        "key": "setting4",
         "value": "blah blah"
       },
       {
         "operation": "add",
-        "path": "setting5",
+        "key": "setting5",
         "value": {
           "key5": "value5"
         }
       },
       {
         "operation": "nochange",
-        "path": "setting6",
+        "key": "setting6",
         "children": [
           {
             "operation": "nochange",
-            "path": "doge",
+            "key": "doge",
             "children": [
               {
                 "operation": "update",
-                "path": "wow",
-                "value": "so much",
-                "oldValue": ""
+                "key": "wow",
+                "value1": "",
+                "value2": "so much"
               }
             ]
           },
           {
             "operation": "nochange",
-            "path": "key",
+            "key": "key",
             "value": "value"
           },
           {
             "operation": "add",
-            "path": "ops",
+            "key": "ops",
             "value": "vops"
           }
         ]
@@ -68,32 +68,32 @@
   },
   {
     "operation": "nochange",
-    "path": "group1",
+    "key": "group1",
     "children": [
       {
         "operation": "update",
-        "path": "baz",
-        "value": "bars",
-        "oldValue": "bas"
+        "key": "baz",
+        "value1": "bas",
+        "value2": "bars"
       },
       {
         "operation": "nochange",
-        "path": "foo",
+        "key": "foo",
         "value": "bar"
       },
       {
         "operation": "update",
-        "path": "nest",
-        "value": "str",
-        "oldValue": {
+        "key": "nest",
+        "value1": {
           "key": "value"
-        }
+        },
+        "value2": "str"
       }
     ]
   },
   {
     "operation": "remove",
-    "path": "group2",
+    "key": "group2",
     "value": {
       "abc": 12345,
       "deep": {
@@ -103,7 +103,7 @@
   },
   {
     "operation": "add",
-    "path": "group3",
+    "key": "group3",
     "value": {
       "deep": {
         "id": {
