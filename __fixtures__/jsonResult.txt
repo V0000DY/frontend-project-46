@@ -1,6 +1,6 @@
 [
   {
-    "operation": "nochange",
+    "operation": "nested",
     "key": "common",
     "children": [
       {
@@ -37,11 +37,11 @@
         }
       },
       {
-        "operation": "nochange",
+        "operation": "nested",
         "key": "setting6",
         "children": [
           {
-            "operation": "nochange",
+            "operation": "nested",
             "key": "doge",
             "children": [
               {
@@ -67,7 +67,7 @@
     ]
   },
   {
-    "operation": "nochange",
+    "operation": "nested",
     "key": "group1",
     "children": [
       {

@@ -7,7 +7,7 @@ export default (data, format) => {
     yml: yaml.load,
   };
   const parse = parsers[format];
-  if (!parse) throw new Error(`Failed to read the file. Format *.${format} is not supported!`);
+  if (!parse) throw new Error(`Failed to read the file. Format "${format}" is not supported!`);
 
   return parse(data);
 };

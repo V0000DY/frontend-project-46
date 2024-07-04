@@ -27,7 +27,7 @@ const findDiff = (data1, data2) => {
 
     if (_.isPlainObject(value1) && _.isPlainObject(value2)) {
       return {
-        operation: 'nochange',
+        operation: 'nested',
         key,
         children: findDiff(value1, value2),
       };

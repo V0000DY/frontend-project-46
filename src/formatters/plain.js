@@ -11,31 +11,39 @@ const getPrintedValue = (value) => {
 const formatPlain = (data) => {
   const result = data.map((item) => {
     const {
-      children,
       operation,
       key,
-      value,
-      value1,
-      value2,
     } = item;
 
-    if (children) {
-      return formatPlain(children.map((child) => _.defaults({ key: `${key}.${child.key}` }, child)));
-    }
+    switch (operation) {
+      case 'nested': {
+        const { children } = item;
 
-    if (operation === 'add') {
-      return `Property '${key}' was added with value: ${getPrintedValue(value)}`;
-    }
+        return formatPlain(children.map((child) => _.defaults({ key: `${key}.${child.key}` }, child)));
+      }
 
-    if (operation === 'remove') {
-      return `Property '${key}' was removed`;
-    }
+      case 'add': {
+        const { value } = item;
 
-    if (operation === 'update') {
-      return `Property '${key}' was updated. From ${getPrintedValue(value1)} to ${getPrintedValue(value2)}`;
-    }
+        return `Property '${key}' was added with value: ${getPrintedValue(value)}`;
+      }
 
-    return '';
+      case 'remove': {
+        return `Property '${key}' was removed`;
+      }
+
+      case 'update': {
+        const {
+          value1,
+          value2,
+        } = item;
+
+        return `Property '${key}' was updated. From ${getPrintedValue(value1)} to ${getPrintedValue(value2)}`;
+      }
+
+      default:
+        return '';
+    }
   });
 
   return _.compact(result).join('\n');
